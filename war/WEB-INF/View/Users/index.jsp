@@ -5,7 +5,7 @@
 <%@ page import="com.google.appengine.api.users.*"%>
 <%
 	UserService use = UserServiceFactory.getUserService();
-	User user=use.getCurrentUser();
+	User user = use.getCurrentUser();
 	List<Users> users = (List<Users>) request.getAttribute("users");
 	List<Role> roles = (List<Role>) request.getAttribute("roles");
 %>
@@ -38,24 +38,47 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  	<style>
-  		#data{
-  			align-items:center; 
-  			padding: 30px;
-  		}
-  		#contenido{
-  			align-text:center;
-  		}
-  		.contenido{
-  			background-color: white; 
-  			color:black; 
-  		}
-  		.lista{
-  			background-color: black; 
-  			color:white;
-  			width: 100%;
-  		}
-  	</style>
+<style>
+#data {
+	align-items: center;
+	padding: 30px;
+}
+
+#contenido {
+	align-text: center;
+}
+.contenido:HOVER{
+	background-color: rgb(0, 174, 255) ;
+	color:white;
+}
+.contenido:HOVER a{
+	color:white;
+}
+.contenido:HOVER a:HOVER{
+	color:black;
+}
+.contenido {
+	background-color: white;
+	color: black;
+}
+
+.lista {
+	background-color: black;
+	color: white;
+	width: 100%;
+}
+
+a {
+	color: blue;
+}
+
+a:HOVER {
+	color: aqua;
+}
+.link{
+	color:white;
+}
+</style>
 </head>
 
 <body>
@@ -74,31 +97,40 @@
 						<nav>
 							<ul class="nav masthead-nav">
 								<li><a href="/index.html">Inicio</a></li>
-								<li  class="active"><a href="/user">Usuarios</a></li>
+								<li class="active"><a href="/user">Usuarios</a></li>
 								<li><a href="/role">Roles</a></li>
 								<li><a href="/access">Accesos</a></li>
 								<li><a href="/resource">Recursos</a></li>
 								<li><a href="/billing">Facturas</a></li>
-								<% if(use.isUserLoggedIn()){%>
-									<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
-								<% }else{%>
-									<li><a href="/user/login">Login</a></li>
-								<%} %>
+								<%
+									if (use.isUserLoggedIn()) {
+								%>
+								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<%
+									} else {
+								%>
+								<li><a href="/user/login">Login</a></li>
+								<%
+									}
+								%>
 								<li><a href="/user/logout">LogOut</a></li>
 							</ul>
 						</nav>
 					</div>
 				</div>
 				<div class="inner cover">
-				<br><br><br><br>
-					<div id="contenido" >
+					<br>
+					<br>
+					<br>
+					<br>
+					<div id="contenido">
 						<div class="titulo">
 							<h1>Usuarios Disponibles</h1>
 						</div>
 						<div class="link">
-							<a href="user/add">Añadir Usuario</a>
+							<a class="link" href="user/add">Añadir Usuario</a>
 						</div>
-						<div id=data >
+						<div id=data>
 							<%
 								if (users.isEmpty()) {
 							%>
@@ -139,11 +171,17 @@
 									%>
 
 									<td><%=us.getBirth()%></td>
-									<%if(us.isStatus()){ %>
+									<%
+										if (us.isStatus()) {
+									%>
 									<td>Activo</td>
-									<%}else{ %>
+									<%
+										} else {
+									%>
 									<td>Desactivado</td>
-									<%} %>
+									<%
+										}
+									%>
 									<td><%=us.getCreate()%></td>
 									<%
 										if (us.isGender()) {
@@ -156,12 +194,10 @@
 									<%
 										}
 									%>
-									<td><b><%=us.getId() %></b></td>
-									<td>
-										<a href="/user/view?id=<%=us.getId()%>">Ver</a>
-										<a href="/user/edit?id=<%=us.getId()%>">Editar</a>
-										<a href="/user/delete?id=<%=us.getId()%>">Borrar</a>
-									</td>
+									<td><b><%=us.getId()%></b></td>
+									<td><a href="/user/view?id=<%=us.getId()%>">Ver</a> <a
+										href="/user/edit?id=<%=us.getId()%>">Editar</a> <a
+										href="/user/delete?id=<%=us.getId()%>">Borrar</a></td>
 								</tr>
 								<%
 									}
@@ -174,16 +210,6 @@
 
 					</div>
 
-				</div>
-
-				<div class="mastfoot">
-					<div class="inner">
-						<p>
-							Facebook: <a
-								href="https://www.facebook.com/erickdavid.carpiohachiri">Erick
-								David Carpio Hachiri</a>, CUI <a href="ecarpioha@unsa.edu.pe">20170612</a>.
-						</p>
-					</div>
 				</div>
 
 			</div>

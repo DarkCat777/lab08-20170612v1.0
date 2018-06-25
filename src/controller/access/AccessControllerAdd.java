@@ -8,25 +8,64 @@ import java.util.List;
 
 import javax.servlet.http.*;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
+
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import controller.PMF;
 import model.Access;
 import model.Resource;
 import model.Role;
+import model.Users;
 
 @SuppressWarnings("serial")
 public class AccessControllerAdd extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		User user = UserServiceFactory.getUserService().getCurrentUser();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		String query2 = "SELECT FROM " + Role.class.getName();
-		String query3 = "SELECT FROM " + Resource.class.getName();
-		List<Role> roles = (List<Role>) pm.newQuery(query2).execute();
-		List<Resource> resources = (List<Resource>) pm.newQuery(query3).execute();
-		pm.close();
-		req.setAttribute("roles", roles);
-		req.setAttribute("resources", resources);
-		req.getRequestDispatcher("/WEB-INF/View/Access/add.jsp").forward(req, resp);
+		if (user == null) {
+			req.getRequestDispatcher("/user/login").forward(req, resp);
+		} else {
+			String query = "SELECT FROM " + Users.class.getName() + " WHERE email=='" + user.getEmail()
+					+ "' && status==true";
+			List<Users> users = (List<Users>) pm.newQuery(query).execute();
+			if (users.isEmpty()) {
+				// ERROR NO EXISTE UN USUARIO O NO ESTA ACTIVO
+				String codigoError = "ERROR NO ES UN USUARIO REGRISTRADO O NO ESTA ACTIVO";
+				req.setAttribute("error", codigoError);
+				req.getRequestDispatcher("/WEB-INF/View/Users/error.jsp").forward(req, resp);
+			} else {
+				String query2 = "SELECT FROM " + Resource.class.getName() + " WHERE url=='" + req.getServletPath()
+						+ "' && status==true";
+				List<Resource> resource = (List<Resource>) pm.newQuery(query2).execute();
+				if (resource.isEmpty()) {
+					// ERROR NO EXISTE UN RECURSO O NO ESTA ACTIVO
+					String codigoError = "ERROR NO EXISTE UN RECURSO O NO ESTA ACTIVO";
+					req.setAttribute("error", codigoError);
+					req.getRequestDispatcher("/WEB-INF/View/Users/error.jsp").forward(req, resp);
+				} else {
+					String query3 = "SELECT FROM " + Access.class.getName() + " WHERE idRole=="
+							+ users.get(0).getIdRole() + " && idUrl==" + resource.get(0).getId() + " && status==true";
+					List<Access> access = (List<Access>) pm.newQuery(query3).execute();
+					if (access.isEmpty()) {
+						// ERROR NO EXISTE UN ACCESO O NO ESTA ACTIVO
+						String codigoError = "ERROR NO EXISTE UN ACCESO O NO ESTA ACTIVO";
+						req.setAttribute("error", codigoError);
+						req.getRequestDispatcher("/WEB-INF/View/Users/error.jsp").forward(req, resp);
+					} else {
+						String query4 = "SELECT FROM " + Role.class.getName();
+						String query5 = "SELECT FROM " + Resource.class.getName();
+						List<Role> roles = (List<Role>) pm.newQuery(query4).execute();
+						List<Resource> resources = (List<Resource>) pm.newQuery(query5).execute();
+						pm.close();
+						req.setAttribute("roles", roles);
+						req.setAttribute("resources", resources);
+						req.getRequestDispatcher("/WEB-INF/View/Access/add.jsp").forward(req, resp);
+					}
+				}
+			}
+		}
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -34,13 +73,12 @@ public class AccessControllerAdd extends HttpServlet {
 		boolean status = Boolean.parseBoolean(req.getParameter("status"));
 		Long idRole = Long.parseLong(req.getParameter("idrole"));
 		Long idResource = Long.parseLong(req.getParameter("idresource"));
-		
-		
+
 		String query = "SELECT FROM " + Access.class.getName();
 		List<Access> access2 = (List<Access>) pm.newQuery(query).execute();
 		boolean duplicado = false;
 		for (Access acc : access2) {
-			if (acc.getIdRole().equals(idRole)&&acc.getIdUrl().equals(idResource)) {
+			if (acc.getIdRole().equals(idRole) && acc.getIdUrl().equals(idResource)) {
 				duplicado = true;
 			}
 		}
@@ -55,9 +93,6 @@ public class AccessControllerAdd extends HttpServlet {
 			pm.close();
 			resp.sendRedirect("/access");// ControllerIndex.java
 		}
-		
-		
-
 
 	}
 }

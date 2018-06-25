@@ -50,7 +50,16 @@
 #contenido {
 	align-text: center;
 }
-
+.contenido:HOVER{
+	background-color: rgb(0, 174, 255) ;
+	color:white;
+}
+.contenido:HOVER a{
+	color:white;
+}
+.contenido:HOVER a:HOVER{
+	color:black;
+}
 .contenido {
 	background-color: white;
 	color: black;
@@ -60,6 +69,15 @@
 	background-color: black;
 	color: white;
 	width: 100%;
+}
+a{
+	color: blue;
+}
+a:HOVER {
+	color:aqua;
+}
+.link{
+	color:white;
 }
 </style>
 </head>
@@ -89,6 +107,7 @@
 									if (use.isUserLoggedIn()) {
 								%>
 								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<li><a href="/user/logout">LogOut</a></li>
 								<%
 									} else {
 								%>
@@ -96,7 +115,6 @@
 								<%
 									}
 								%>
-								<li><a href="/user/logout">LogOut</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -108,7 +126,7 @@
 							<h1>Accesos Disponibles</h1>
 						</div>
 						<div class="link">
-							<a href="/access/add">Añadir Accesos</a>
+							<a class="link" href="/access/add">Añadir Accesos</a>
 						</div>
 						<div id="data">
 							<%

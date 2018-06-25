@@ -42,7 +42,16 @@
 	align-items: center;
 	padding: 30px;
 }
-
+.contenido:HOVER{
+	background-color: rgb(0, 174, 255) ;
+	color:white;
+}
+.contenido:HOVER a{
+	color:white;
+}
+.contenido:HOVER a:HOVER{
+	color:black;
+}
 #contenido {
 	align-text: center;
 }
@@ -56,6 +65,15 @@
 	background-color: black;
 	color: white;
 	width: 100%;
+}
+a{
+	color: blue;
+}
+a:HOVER {
+	color:aqua;
+}
+.link{
+	color:white;
 }
 </style>
 </head>
@@ -104,7 +122,7 @@
 							<h1>Facturas Disponibles</h1>
 						</div>
 						<div class="link">
-							<a href="/billing/add" title="Añadir Factura">Añadir Factura</a>
+							<a href="/billing/add" class="link" title="Añadir Factura">Añadir Factura</a>
 						</div>
 						<div class="vista">
 							<%

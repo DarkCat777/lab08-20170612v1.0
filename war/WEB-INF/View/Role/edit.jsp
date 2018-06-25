@@ -3,96 +3,172 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.Role"%>
 <%@page import="java.util.Date"%>
+<%@ page import="com.google.appengine.api.users.*"%>
 <%
 	Role role = (Role) request.getAttribute("role");
+	UserService use = UserServiceFactory.getUserService();
+	User user = use.getCurrentUser();
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html lang="es">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
 <title>ACL - Home</title>
-<link rel="stylesheet" type="text/css" href="/CSS/reset.css" />
-<link rel="stylesheet" type="text/css" href="/CSS/main.css" />
+
+<!-- Bootstrap core CSS -->
+<link href="/CSS/bootstrap.min.css" rel="stylesheet">
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="/CSS/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="/CSS/cover.css" rel="stylesheet">
+
+<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<script src="/JS/ie-emulation-modes-warning.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+#data {
+	align-items: center;
+	padding: 30px;
+}
+
+#contenido {
+	align-text: center;
+}
+
+.contenido {
+	background-color: white;
+	color: black;
+}
+
+.lista {
+	background-color: black;
+	color: white;
+	width: 100%;
+}
+
+.boton {
+	color: black;
+	width: 150px;
+}
+
+input .dato {
+	width: 20%;
+	color: black;
+}
+
+select {
+	color: black
+}
+
+a {
+	color: blue;
+}
+
+a:HOVER {
+	color: aqua;
+}
+
+.link {
+	color: white;
+}
+</style>
 </head>
 
 <body>
-	<div id="header">
-		<div class="container">
-			<h1>
-				<a href="/user">ACL Laboratorio 8</a>
-			</h1>
-			<div id="main_menu">
-				<ul>
-					<li class="first_list"><a href="/user"
-						class="main_menu_first main_current">home</a></li>
-					<li class="first_list with_dropdown"><a href="#"
-						class="main_menu_first">Lista de Control de Acceso (ACL)</a>
-						<ul class="first">
-							<li class="second_list_border"><a href="/user"
-								class="main_menu_second">usuario</a></li>
-							<li class="second_list_border"><a href="/billing"
-								class="main_menu_second">facturas</a></li>
-							<li class="second_list_border"><a href="/role"
-								class="main_menu_second">roles</a></li>
-							<li class="second_list_border"><a href="/access"
-								class="main_menu_second">access</a></li>
-							<li class="second_list_border"><a href="/resource"
-								class="main_menu_second">resources</a></li>
-						</ul></li>
-					<li class="first_list with_dropdown"><a href="#"
-						class="main_menu_first">login</a>
-						<ul class="second">
-							<li class="second_list_border"><a href="/user/logout"
-								class="main_menu_second">Log Out</a></li>
-							<li class="second_list_border"><a href="/user/login"
-								class="main_menu_second">Log In</a></li>
-						</ul></li>
-					<li class="first_list"><a href="/user"
-						class="main_menu_first main_current">CUI: 20170612</a></li>
-				</ul>
-			</div>
-			<!-- END #main_menu -->
-		</div>
-		<!-- END .container -->
-	</div>
-	<!-- END #header -->
-	<div id="contenido">
-		<div class="titulo">
-			<h2>
-				Editar Role
-				<%=role.getName()%></h2>
-		</div>
-		<div class="formulario">
-			<form action="/role/edit" method="post">
-				<label><b>Nombre del Role: </b></label>
-				<br>
-				<input type="text" name="name" placeholder="Nombre del Role"
-					value="<%=role.getName()%>" required>
-				<br>
-				<br>
-				<label><b>Estado: </b></label>
-				<br>
-				<input type="text" name="status" placeholder="Estado true or false"
-					value="<%=role.isStatus()%>" required>
-				<br>
-				<br>
-				<label><b>Fecha de Creación: </b></label>
-				<br>
-				<input type="text" name="create"
-					placeholder="Fecha de Creación dd/MM/yyyy"
-					value="<%=role.getCreate()%>" required>
-				<br>
-				<br>
-				<input type="hidden" name="id" value="<%=role.getId()%>">
-				<input class="boton" type="submit" value="Editar">
-			</form>
-		</div>
-		<div class="link">
-			<a id="add" href="/role" title="Lista de Facturas">Lista de
-				Facturas</a>
-		</div>
-	</div>
-</body>
 
+	<div class="site-wrapper">
+
+		<div class="site-wrapper-inner">
+
+			<div class="cover-container">
+
+				<div class="masthead clearfix">
+					<div class="inner">
+						<h3 class="masthead-brand">
+							<b>Access Control List (ACL)</b>
+						</h3>
+						<nav>
+							<ul class="nav masthead-nav">
+								<li><a href="/index.html">Inicio</a></li>
+								<li><a href="/user">Usuarios</a></li>
+								<li class="active"><a href="/role">Roles</a></li>
+								<li><a href="/access">Accesos</a></li>
+								<li><a href="/resource">Recursos</a></li>
+								<li><a href="/billing">Facturas</a></li>
+								<%
+									if (use.isUserLoggedIn()) {
+								%>
+								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<li><a href="/user/logout">LogOut</a></li>
+								<%
+									} else {
+								%>
+								<li><a href="/user/login">Login</a></li>
+								<%
+									}
+								%>
+
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="inner cover">
+					<br> <br> <br> <br>
+					<div id="contenido">
+						<div class="titulo">
+							<h2>
+								Editar Role
+								<%=role.getName()%></h2>
+						</div>
+						<div class="formulario">
+							<form action="/role/edit" method="post">
+								<label><b>Nombre del Role: </b></label> <br> <input
+									type="text" name="name" placeholder="Nombre del Role"
+									value="<%=role.getName()%>" required> <br> <br>
+								<label><b>Estado: </b></label> <br> <select
+									name="status">
+									<option value="true">Activo</option>
+									<option value="false">Desactivado</option>
+								</select>
+								 <br> <br>
+								<label><b>Fecha de Creación: </b></label> <br> <input
+									type="date" name="create" required> <br> <br>
+								<input type="hidden" name="id" value="<%=role.getId()%>">
+								<input class="boton" type="submit" value="Editar">
+							</form>
+						</div>
+						<div class="link">
+							<a id="add" href="/role" title="Lista de Facturas">Lista de
+								Roles</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Bootstrap core JavaScript
+    ================================================== -->
+				<!-- Placed at the end of the document so the pages load faster -->
+				<script
+					src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+				<script>
+					window.jQuery
+							|| document
+									.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+				</script>
+				<script src="/JS/bootstrap.min.js"></script>
+				<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+				<script src="/JS/ie10-viewport-bug-workaround.js"></script>
+</body>
 </html>

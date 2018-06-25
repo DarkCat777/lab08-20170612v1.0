@@ -89,6 +89,7 @@
 									if (use.isUserLoggedIn()) {
 								%>
 								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<li><a href="/user/logout">LogOut</a></li>
 								<%
 									} else {
 								%>
@@ -96,7 +97,7 @@
 								<%
 									}
 								%>
-								<li><a href="/user/logout">LogOut</a></li>
+								
 							</ul>
 						</nav>
 					</div>

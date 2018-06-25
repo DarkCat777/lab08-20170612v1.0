@@ -3,128 +3,190 @@
 <%@ page import="java.util.List"%>
 <%@ page import="model.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.google.appengine.api.users.*"%>
 <%
 	List<Role> roles = (List<Role>) request.getAttribute("roles");
 	List<Resource> resources = (List<Resource>) request.getAttribute("resources");
+	UserService use = UserServiceFactory.getUserService();
+	User user = use.getCurrentUser();
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html lang="es">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
 <title>ACL - Home</title>
-<link rel="stylesheet" type="text/css" href="/CSS/reset.css" />
-<link rel="stylesheet" type="text/css" href="/CSS/main.css" />
+
+<!-- Bootstrap core CSS -->
+<link href="/CSS/bootstrap.min.css" rel="stylesheet">
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="/CSS/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="/CSS/cover.css" rel="stylesheet">
+
+<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<script src="/JS/ie-emulation-modes-warning.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+#data {
+	align-items: center;
+	padding: 30px;
+}
+
+#contenido {
+	align-text: center;
+}
+
+.contenido {
+	background-color: white;
+	color: black;
+}
+
+.lista {
+	background-color: black;
+	color: black;
+	width: 100%;
+}
+.formulario{
+	color:black;
+}
+label{
+	color:white;
+}
+</style>
 </head>
 
 <body>
-	<div id="header">
-		<div class="container">
-			<h1>
-				<a href="/user">ACL Laboratorio 8</a>
-			</h1>
-			<div id="main_menu">
-				<ul>
-					<li class="first_list"><a href="/user"
-						class="main_menu_first main_current">home</a></li>
-					<li class="first_list with_dropdown"><a href="#"
-						class="main_menu_first">Lista de Control de Acceso (ACL)</a>
-						<ul class="first">
-							<li class="second_list_border"><a href="/user"
-								class="main_menu_second">usuario</a></li>
-							<li class="second_list_border"><a href="/billing"
-								class="main_menu_second">facturas</a></li>
-							<li class="second_list_border"><a href="/role"
-								class="main_menu_second">roles</a></li>
-							<li class="second_list_border"><a href="/access"
-								class="main_menu_second">access</a></li>
-							<li class="second_list_border"><a href="/resource"
-								class="main_menu_second">resources</a></li>
-						</ul></li>
-					<li class="first_list with_dropdown"><a href="#"
-						class="main_menu_first">login</a>
-						<ul class="second">
-							<li class="second_list_border"><a href="/user/logout"
-								class="main_menu_second">Log Out</a></li>
-							<li class="second_list_border"><a href="/user/login"
-								class="main_menu_second">Log In</a></li>
-						</ul></li>
-					<li class="first_list"><a href="/user"
-						class="main_menu_first main_current">CUI: 20170612</a></li>
-				</ul>
-			</div>
-			<!-- END #main_menu -->
-		</div>
-		<!-- END .container -->
-	</div>
-	<!-- END #header -->
-	<div id="contenido">
-		<div class="titulo">
-			<h1>Añadir Acceso</h1>
-		</div>
-		<div class="formulario">
-			<form action="/access/add" method="post">
-				<label><b>Nombre del Role: </b></label>
-				<br>
-				<%
-					if (roles.isEmpty()) {
-				%>
-				<a href="/role/add">Crear un Role</a>
-				<%
-					} else {
-				%>
-				<select name="idrole" size="1">
-					<%
-						for (Role role : roles) {
-					%>
-					<option value="<%=role.getId()%>"><%=role.getName()%></option>
-					<%
-						}
-					%>
-				</select>
-				<%
-					}
-				%>
-				<br>
-				<br>
-				<label><b>Nombre del Recurso:</b></label>
-				<br>
-				<%
-					if (resources.isEmpty()) {
-				%>
-				<a href="/resource/add">Crear un Recurso</a>
-				<%
-					} else {
-				%>
-				<select name="idresource" size="1">
-					<%
-						for (Resource resou : resources) {
-					%>
-					<option value="<%=resou.getId()%>"><%=resou.getUrl()%></option>
-					<%
-						}
-					%>
-				</select>
-				<%
-					}
-				%>
-				<br>
-				<br>
-				<label><b>Estado:</b></label>
-				<br>
-				<select name="status">
-				<option value="true">Activo</option>
-				<option value="false">Desactivado</option>
-				</select>
-				<br>
-				<br>
-				<input class="boton" type="submit" value="Añadir Role">
-			</form>
-		</div>
-		<div class=link>
-			<a href="/role" title="Añadir Role"><b>Lista de Roles</b></a>
-		</div>
-	</div>
-</body>
 
+	<div class="site-wrapper">
+
+		<div class="site-wrapper-inner">
+
+			<div class="cover-container">
+
+				<div class="masthead clearfix">
+					<div class="inner">
+						<h3 class="masthead-brand">
+							<b>Access Control List (ACL)</b>
+						</h3>
+						<nav>
+							<ul class="nav masthead-nav">
+								<li><a href="/index.html">Inicio</a></li>
+								<li><a href="/user">Usuarios</a></li>
+								<li><a href="/role">Roles</a></li>
+								<li class="active"><a href="/access">Accesos</a></li>
+								<li><a href="/resource">Recursos</a></li>
+								<li><a href="/billing">Facturas</a></li>
+								<%
+									if (use.isUserLoggedIn()) {
+								%>
+								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<li><a href="/user/logout">LogOut</a></li>
+								<%
+									} else {
+								%>
+								<li><a href="/user/login">Login</a></li>
+								<%
+									}
+								%>
+								
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="inner cover">
+					<br>
+					<br>
+					<br>
+					<br>
+					<div id="contenido">
+						<div class="titulo">
+							<h1>Añadir Acceso</h1>
+						</div>
+						<div class="formulario">
+							<form action="/access/add" method="post">
+								<label><b>Nombre del Role: </b></label> <br>
+								<%
+									if (roles.isEmpty()) {
+								%>
+								<a href="/role/add">Crear un Role</a>
+								<%
+									} else {
+								%>
+								<select name="idrole" size="1">
+									<%
+										for (Role role : roles) {
+									%>
+									<option value="<%=role.getId()%>"><%=role.getName()%></option>
+									<%
+										}
+									%>
+								</select>
+								<%
+									}
+								%>
+								<br> <br> <label><b>Nombre del Recurso:</b></label> <br>
+								<%
+									if (resources.isEmpty()) {
+								%>
+								<a href="/resource/add">Crear un Recurso</a>
+								<%
+									} else {
+								%>
+								<select name="idresource" size="1">
+									<%
+										for (Resource resou : resources) {
+									%>
+									<option value="<%=resou.getId()%>"><%=resou.getUrl()%></option>
+									<%
+										}
+									%>
+								</select>
+								<%
+									}
+								%>
+								<br> <br> <label><b>Estado:</b></label> <br> <select
+									name="status">
+									<option value="true">Activo</option>
+									<option value="false">Desactivado</option>
+								</select> <br> <br> <input class="boton" type="submit"
+									value="Añadir Acceso">
+							</form>
+						</div>
+						<div class=link>
+							<a href="/access"><b>Lista de Accesos</b></a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Bootstrap core JavaScript
+    ================================================== -->
+				<!-- Placed at the end of the document so the pages load faster -->
+				<script
+					src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+				<script>
+					window.jQuery
+							|| document
+									.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+				</script>
+				<script src="/JS/bootstrap.min.js"></script>
+				<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+				<script src="/JS/ie10-viewport-bug-workaround.js"></script>
+</body>
 </html>
+
+
+
+

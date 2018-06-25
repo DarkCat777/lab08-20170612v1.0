@@ -46,7 +46,16 @@
 #contenido {
 	align-text: center;
 }
-
+.contenido:HOVER{
+	background-color: rgb(0, 174, 255) ;
+	color:white;
+}
+.contenido:HOVER a{
+	color:white;
+}
+.contenido:HOVER a:HOVER{
+	color:black;
+}
 .contenido {
 	background-color: white;
 	color: black;
@@ -56,6 +65,15 @@
 	background-color: black;
 	color: white;
 	width: 100%;
+}
+a{
+	color: blue;
+}
+a:HOVER {
+	color:aqua;
+}
+.link{
+	color:white;
 }
 </style>
 </head>
@@ -85,6 +103,7 @@
 									if (use.isUserLoggedIn()) {
 								%>
 								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<li><a href="/user/logout">LogOut</a></li>
 								<%
 									} else {
 								%>
@@ -92,7 +111,7 @@
 								<%
 									}
 								%>
-								<li><a href="/user/logout">LogOut</a></li>
+								
 							</ul>
 						</nav>
 					</div>
@@ -104,7 +123,7 @@
 							<h1>Roles Disponibles</h1>
 						</div>
 						<div class="link">
-							<a href="/role/add">Añadir Role</a>
+							<a class="link" href="/role/add">Añadir Role</a>
 						</div>
 						<div id="data">
 							<%
@@ -151,17 +170,6 @@
 
 					</div>
 				</div>
-
-				<div class="mastfoot">
-					<div class="inner">
-						<p>
-							Facebook: <a
-								href="https://www.facebook.com/erickdavid.carpiohachiri">Erick
-								David Carpio Hachiri</a>, CUI <a href="ecarpioha@unsa.edu.pe">20170612</a>.
-						</p>
-					</div>
-				</div>
-
 			</div>
 
 		</div>

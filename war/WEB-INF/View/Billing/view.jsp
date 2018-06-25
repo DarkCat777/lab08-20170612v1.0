@@ -87,6 +87,7 @@
 									if (use.isUserLoggedIn()) {
 								%>
 								<li class="active"><a href="/user/login"><%=user.getNickname()%></a></li>
+								<li><a href="/user/logout">LogOut</a></li>
 								<%
 									} else {
 								%>
@@ -94,7 +95,7 @@
 								<%
 									}
 								%>
-								<li><a href="/user/logout">LogOut</a></li>
+								
 							</ul>
 						</nav>
 					</div>
@@ -135,11 +136,11 @@
 						<br>
 						<form action="/billing/delete" method="get">
 							<input type="hidden" value="<%=billing.getId()%>" name="id">
-							<input class="boton" type="submit" value="Delete">
+							<input class="boton" type="submit" value="Borrar">
 						</form>
 						<form action="/billing/edit" method="get">
 							<input type="hidden" value="<%=billing.getId()%>" name="id">
-							<input class="boton" type="submit" value="Edit">
+							<input class="boton" type="submit" value="Editar">
 						</form>
 						<div class=link>
 							<a href="/billing" title="Añadir Factura">Lista de Facturas</a>
